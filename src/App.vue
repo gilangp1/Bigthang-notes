@@ -44,11 +44,12 @@ export default {
   },
   methods: {
      newNote(){
-          this.dataForm = {id: 0, title: '', description: ''}
+          this.dataForm = {id: 0, title: '', description: '', mode : 'save'}
      },
      editNote(id){
           // console.log("App id: "+ id);
           this.dataForm = this.notes.find(note => note.id === id);
+          this.dataForm.mode = 'update';
      },
      saveNote(title, description){
           let newId = 0;
