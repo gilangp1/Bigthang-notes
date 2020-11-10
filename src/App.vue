@@ -12,12 +12,12 @@
         <button @click="newNote" class="bg-success btn btn-new-note">
             + Note Baru
         </button>
-        <ListNotes :propNotes="notes" :propEditNote="editNote" />
+        <ListNotes :propEditNote="editNote" />
       </div>
 
     </div>
     <div class="kanan">
-         <FormNotes :propRemoveNote="removeNote" :propSaveNote="saveNote" :propUpdateNote="updateNote" :propDataForm="dataForm" />
+         <FormNotes :propRemoveNote="removeNote" :propSaveNote="saveNote" :propUpdateNote="updateNote" />
     </div>
   </div>
 </template>
@@ -31,11 +31,7 @@ export default {
   name: 'App',
   data : function(){
      return{
-       dataForm : {},
-       notes : [
-                    { id: 1, title: 'Wegodev', description: 'Ini adalah jalan ninjaku' },
-                    { id: 2, title: 'BigThang', description: 'Bersabarlah giliranmu akan datang'}
-               ]
+       
      }
   },
   components: {
@@ -45,10 +41,6 @@ export default {
   methods: {
      newNote(){
           this.dataForm = {id: 0, title: '', description: ''}
-     },
-     editNote(id){
-          // console.log("App id: "+ id);
-          this.dataForm = this.notes.find(note => note.id === id);
      },
      saveNote(title, description){
           let newId = 0;
