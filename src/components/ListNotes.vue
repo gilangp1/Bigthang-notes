@@ -29,11 +29,22 @@ export default {
      },
      methods: {
           editNote(id){
-          // console.log("App id: "+ id);
-          let dataForm = this.notes.find(note => note.id === id);
+               // console.log("App id: "+ id);
+               let dataForm = this.notes.find(note => note.id === id);
 
-          this.$root.$emit('emitForm', dataForm);
-        }
+               this.$root.$emit('emitForm', dataForm);
+          },
+          createNewId(){
+               let newId = 0;
+               
+               if(this.notes.length === 0){
+                    newId = 1;
+               }else{
+                    newId = this.notes[this.notes.length - 1].id + 1;
+               }
+
+               return newId;
+          }
      },
      mounted(){
           this.$root.$on('emitRemoveNote', data => {
@@ -42,8 +53,16 @@ export default {
           });
           this.$root.$on('emitUpdateNote', data => {
                let noteIndex = this.notes.findIndex(note => note.id === data.id);
+               
                this.notes[noteIndex].title = data.title;
                this.notes[noteIndex].description = data.description;
+          });
+          this.$root.$on('emitSaveNote', data => {
+               let newId = this.createNewId();
+               let newNote = {id : newId, 'title' : data.title, 'description' : data.description }
+
+               this.notes.push(newNote);
+               this.editNote(newId);
           })
      }
 }
