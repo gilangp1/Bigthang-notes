@@ -51,6 +51,7 @@ export default {
           background: #f7f7f7;
           height: 150px;
           width: 100%;
+          
      }
      .btn-note:hover {
           background:#eaeaea;

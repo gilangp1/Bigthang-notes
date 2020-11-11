@@ -33,8 +33,8 @@ export default {
      return{
        dataForm : {},
        notes : [
-                    { id: 1, title: 'Wegodev', description: 'Ini adalah jalan ninjaku' },
-                    { id: 2, title: 'BigThang', description: 'Bersabarlah giliranmu akan datang'}
+                    { id: 1, title: 'Wegodev', description: 'Ini adalah isi dari Wegodev' },
+                    { id: 2, title: 'BigThang', description: 'Ini adalah isi dari Bigthang'}
                ]
      }
   },
@@ -53,16 +53,19 @@ export default {
      },
      saveNote(title, description){
           let newId = 0;
-
+   
           if(this.notes.length === 0){
                newId = 1;
           }else{
                newId = this.notes[this.notes.length - 1].id + 1;
           }
-
-          let newNotes = {id : newId, 'title' : title, 'description' : description }
-
-          this.notes.push(newNotes);
+          
+          if(this.notes.length < 3){
+               let newNotes = {id : newId, 'title' : title, 'description' : description }
+               this.notes.push(newNotes);
+          }else{
+               alert('tidak boleh lebih dari 3');
+          }
           this.editNote(newId);
      },
      updateNote(id, title, description){
