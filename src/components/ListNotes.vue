@@ -31,7 +31,7 @@ export default {
           editNote(id){
                // console.log("App id: "+ id);
                let dataForm = this.notes.find(note => note.id === id);
-
+               dataForm.mode = 'update';
                this.$root.$emit('emitForm', dataForm);
           },
           createNewId(){
@@ -59,9 +59,13 @@ export default {
           });
           this.$root.$on('emitSaveNote', data => {
                let newId = this.createNewId();
-               let newNote = {id : newId, 'title' : data.title, 'description' : data.description }
+               if(this.notes.length < 3){
+                    let newNote = {id : newId, 'title' : data.title, 'description' : data.description }
+                    this.notes.push(newNote);
+               }else{
+                    alert('cuma boleh 3 data');
+               }
 
-               this.notes.push(newNote);
                this.editNote(newId);
           })
      }
