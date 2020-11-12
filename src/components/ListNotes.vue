@@ -20,11 +20,6 @@ export default {
                notes : []
           }
      },
-     props: {
-         propEditNote : {
-              type : Function
-         }
-     },
      methods: {
           editNote(id){
                // console.log("App id: "+ id);
@@ -32,20 +27,8 @@ export default {
                dataForm.mode = 'update';
                this.$root.$emit('emitForm', dataForm);
           },
-          createNewId(){
-               let newId = 0;
-               
-               if(this.notes.length === 0){
-                    newId = 1;
-               }else{
-                    newId = this.notes[this.notes.length - 1].id + 1;
-               }
-
-               return newId;
-          },
           getData(){
                axios.get('http://localhost/bigthang-notes/note').then(response => {
-                    console.log(response);
                     this.notes = response.data;
                })
           }
@@ -57,18 +40,19 @@ export default {
                let noteIndex = this.notes.findIndex(note => note.id === data.id);
                this.notes.splice(noteIndex, 1);
           });
+
           this.$root.$on('emitUpdateNote', data => {
                let noteIndex = this.notes.findIndex(note => note.id === data.id);
                
                this.notes[noteIndex].title = data.title;
                this.notes[noteIndex].description = data.description;
           });
-          this.$root.$on('emitSaveNote', data => {
-               let newId = this.createNewId();
 
-               let newNote = {id : newId, 'title' : data.title, 'description' : data.description }
-               this.notes.push(newNote);
-               this.editNote(newId);
+          this.$root.$on('emitSaveNote', data => {
+
+               let newNote = {id : data.id, 'title' : data.title, 'description' : data.description }
+               this.notes.unshift(newNote);
+               this.editNote(data.id);
           })
      }
 }
