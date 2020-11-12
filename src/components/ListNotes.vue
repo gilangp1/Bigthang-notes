@@ -12,14 +12,12 @@
 </template>
 
 <script>
+     import axios from 'axios';
 export default {
      name: 'ListNotes',
      data: function(){
           return{
-               notes : [
-                    { id: 1, title: 'Wegodev', description: 'Ini adalah jalan ninjaku' },
-                    { id: 2, title: 'BigThang', description: 'Bersabarlah giliranmu akan datang'}
-               ]
+               notes : []
           }
      },
      props: {
@@ -44,9 +42,17 @@ export default {
                }
 
                return newId;
+          },
+          getData(){
+               axios.get('http://localhost/bigthang-notes/note').then(response => {
+                    console.log(response);
+                    this.notes = response.data;
+               })
           }
      },
      mounted(){
+          this.getData();
+
           this.$root.$on('emitRemoveNote', data => {
                let noteIndex = this.notes.findIndex(note => note.id === data.id);
                this.notes.splice(noteIndex, 1);
@@ -59,13 +65,9 @@ export default {
           });
           this.$root.$on('emitSaveNote', data => {
                let newId = this.createNewId();
-               if(this.notes.length < 3){
-                    let newNote = {id : newId, 'title' : data.title, 'description' : data.description }
-                    this.notes.push(newNote);
-               }else{
-                    alert('cuma boleh 3 data');
-               }
 
+               let newNote = {id : newId, 'title' : data.title, 'description' : data.description }
+               this.notes.push(newNote);
                this.editNote(newId);
           })
      }
