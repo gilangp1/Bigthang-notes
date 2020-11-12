@@ -11,8 +11,9 @@
      </div>
 </template>
 
-<script>
+<script type="text/javascript">
      import axios from 'axios';
+
 export default {
      name: 'ListNotes',
      data: function(){
@@ -22,7 +23,6 @@ export default {
      },
      methods: {
           editNote(id){
-               // console.log("App id: "+ id);
                let dataForm = this.notes.find(note => note.id === id);
                dataForm.mode = 'update';
                this.$root.$emit('emitForm', dataForm);

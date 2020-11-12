@@ -22,7 +22,6 @@
     import axios from 'axios';
 export default {
      name: 'FormNotes',
-     props: {},
      data: function(){
           return{
               id : 0,
@@ -49,17 +48,32 @@ export default {
         },
         submitUpdate(){
 
-            let data = {
-                id : this.id,
-                title : this.title,
-                description : this.description
-            }
-            this.$root.$emit('emitUpdateNote', data);
+            let params = new URLSearchParams();
+            params.append('id', this.id);
+            params.append('title', this.title);
+            params.append('description', this.description);
+
+            axios.post('http://localhost/bigthang-notes/note/update', params).then(response => {
+                let data = {
+                    id : response.data.id,
+                    title : this.title,
+                    description : this.description
+                }
+                this.$root.$emit('emitUpdateNote', data);
+            });
         },
         submitRemove(){
-            let data = {id : this.id};
-            this.$root.$emit('emitRemoveNote', data)
-            this.resetInput();
+
+            let params = new URLSearchParams();
+            params.append('id', this.id);
+
+            axios.post('http://localhost/bigthang-notes/note/delete', params).then(response => {
+                let data = {
+                    id : response.data.id
+                }
+                this.$root.$emit('emitRemoveNote', data);
+                this.resetInput();
+            });
         },
         resetInput(){
             this.id = 0;
@@ -69,7 +83,6 @@ export default {
      },
      mounted(){
             this.$root.$on('emitForm', data => {
-                // console.log(data);
                 this.id = data.id;
                 this.title = data.title;
                 this.description = data.description; 
